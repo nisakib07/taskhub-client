@@ -2,6 +2,7 @@ import Lottie from "react-lottie";
 import signUp from "../../assets/signup.json";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import axios from "axios";
 const SignUp = () => {
   const defaultOptions = {
     loop: true,
@@ -18,7 +19,29 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const imageFile = { image: data.userImage[0] };
+    const res = await axios.post(img_hosting_api, imageFile, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
+    const userImage = res.data.data.display_url;
+
+    const newUser = {
+      name: data?.name,
+      email: data?.email,
+      password: data?.password,
+      userImage: userImage,
+    };
+
+    console.log(newUser);
+  };
+
+  const img_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+
+  const img_hosting_api = `https://api.imgbb.com/1/upload?key=${img_hosting_key}`;
+
   return (
     <div className="flex items-center justify-around max-w-screen-xl mx-auto">
       <div className="w-1/2">
@@ -37,10 +60,7 @@ const SignUp = () => {
               <label className="label">
                 <span className="text-lg font-semibold">Email Address</span>
               </label>
-              <input
-                className="input input-bordered"
-                {...register("example")}
-              />
+              <input className="input input-bordered" {...register("email")} />
             </div>
             <div className="form-control">
               <label className="label">
@@ -48,7 +68,7 @@ const SignUp = () => {
               </label>
               <input
                 className="input input-bordered"
-                {...register("example")}
+                {...register("password")}
               />
             </div>
             <div className="form-control">
@@ -61,7 +81,9 @@ const SignUp = () => {
                 {...register("userImage")}
               />
             </div>
-            <button className="btn mt-4 w-full bg-green-500 hover:bg-green-400 border-0">
+            <button
+              type="submit"
+              className="btn mt-4 w-full bg-green-500 hover:bg-green-400 border-0">
               Sign Up
             </button>
           </form>

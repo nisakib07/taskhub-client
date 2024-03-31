@@ -1,13 +1,12 @@
 import Lottie from "react-lottie";
-import login from "../../assets/login.json";
+import signUp from "../../assets/signup.json";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-
-const Login = () => {
+const SignUp = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData: login,
+    animationData: signUp,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
@@ -30,6 +29,12 @@ const Login = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control">
               <label className="label">
+                <span className="text-lg font-semibold">Name</span>
+              </label>
+              <input className="input input-bordered" {...register("name")} />
+            </div>
+            <div className="form-control">
+              <label className="label">
                 <span className="text-lg font-semibold">Email Address</span>
               </label>
               <input
@@ -46,14 +51,24 @@ const Login = () => {
                 {...register("example")}
               />
             </div>
-            <button className="btn mt-3 w-full bg-green-500 hover:bg-green-400 border-0">
-              Log In
+            <div className="form-control">
+              <label className="label">
+                <span className="text-lg font-semibold">Image</span>
+              </label>
+              <input
+                type="file"
+                className="file-input file-input-bordered border-0  w-full max-w-xs"
+                {...register("userImage")}
+              />
+            </div>
+            <button className="btn mt-4 w-full bg-green-500 hover:bg-green-400 border-0">
+              Sign Up
             </button>
           </form>
           <p className="mt-3">
-            Don't have an account?{" "}
-            <Link className="underline font-bold" to="/signUp">
-              Sign Up!
+            Already have an account?{" "}
+            <Link className="underline font-bold" to="/login">
+              Login!
             </Link>
           </p>
         </div>
@@ -62,4 +77,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

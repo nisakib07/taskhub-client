@@ -3,6 +3,11 @@ import signUp from "../../assets/signup.json";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+
+const img_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+
+const img_hosting_api = `https://api.imgbb.com/1/upload?key=${img_hosting_key}`;
 const SignUp = () => {
   const defaultOptions = {
     loop: true,
@@ -26,21 +31,29 @@ const SignUp = () => {
         "content-type": "multipart/form-data",
       },
     });
-    const userImage = res.data.data.display_url;
 
-    const newUser = {
-      name: data?.name,
-      email: data?.email,
-      password: data?.password,
-      userImage: userImage,
-    };
+    if (res.data.success) {
+      const newUser = {
+        name: data?.name,
+        email: data?.email,
+        password: data?.password,
+        userImage: res.data.data.display_url,
+      };
 
-    console.log(newUser);
+      await axios
+        .post("http://localhost:5000/register", newUser)
+        .then((res) => {
+          if (res.data === "Email already in use") {
+            toast.error(res.data);
+          } else {
+            toast.success("Registered Successfully");
+          }
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
+    }
   };
-
-  const img_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
-
-  const img_hosting_api = `https://api.imgbb.com/1/upload?key=${img_hosting_key}`;
 
   return (
     <div className="flex items-center justify-around max-w-screen-xl mx-auto">

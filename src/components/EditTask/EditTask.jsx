@@ -1,13 +1,22 @@
-import { useContext } from "react";
-import { AuthContext } from "../../Providers/AuthProvider";
-import { useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-const AddTask = () => {
-  const { user } = useContext(AuthContext);
+const EditTask = () => {
+  const { id } = useParams();
 
   const axiosSecure = useAxiosSecure();
+
+  const { data: singleTask, refetch } = useQuery({
+    queryKey: ["singleTask"],
+    queryFn: async () => {
+      const res = await axiosSecure(`/singleTask/${id}`);
+      return res.data;
+    },
+  });
+
   const {
     register,
     handleSubmit,
@@ -16,16 +25,16 @@ const AddTask = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const newTask = {
-      title: data?.title,
-      description: data?.description,
-      deadline: data?.deadline,
-      email: user?.email,
+    const updatedTask = {
+      title: data?.title || singleTask?.title,
+      deadline: data?.deadline || singleTask?.deadline,
+      description: data?.description || singleTask?.description,
     };
-    axiosSecure.post("/add-tasks", newTask).then((res) => {
-      if (res?.data?._id) {
-        toast.success("Task Added Successfully");
-        reset();
+
+    axiosSecure.put(`editTask/${id}`, updatedTask).then((res) => {
+      refetch();
+      if (res.data.modifiedCount > 0) {
+        toast.success("Task updated successfully");
       }
     });
   };
@@ -42,15 +51,11 @@ const AddTask = () => {
             <input
               type="text"
               placeholder="Type Here"
+              defaultValue={singleTask?.title}
               className="input input-bordered"
               name="text"
-              {...register("title", { required: true })}
+              {...register("title")}
             />
-            {errors.title && (
-              <span className="text-red-500 mt-2 text-center">
-                Title is required
-              </span>
-            )}
           </div>
 
           {/* Deadline */}
@@ -61,14 +66,10 @@ const AddTask = () => {
             </label>
             <input
               type="date"
+              defaultValue={singleTask?.deadline}
               className="input input-bordered mt-0"
-              {...register("deadline", { required: true })}
+              {...register("deadline")}
             />
-            {errors.deadline && (
-              <span className=" text-red-500 mt-2 text-center">
-                Deadline is required
-              </span>
-            )}
           </div>
         </div>
 
@@ -80,23 +81,19 @@ const AddTask = () => {
           <textarea
             type="text"
             rows={3}
+            defaultValue={singleTask?.description}
             placeholder="Type Here"
             className="textarea textarea-bordered"
             name="text"
-            {...register("description", { required: true })}
+            {...register("description")}
           />
-          {errors.description && (
-            <span className="text-red-500 mt-2 text-center">
-              Description is required
-            </span>
-          )}
         </div>
 
         <div className="flex justify-center">
           <button
             type="submit"
             className="btn mt-4 bg-blue-600 hover:bg-blue-700 border-0 text-white text-semibold md:w-1/4">
-            Add Task
+            Update Task
           </button>
         </div>
       </form>
@@ -104,4 +101,4 @@ const AddTask = () => {
   );
 };
 
-export default AddTask;
+export default EditTask;

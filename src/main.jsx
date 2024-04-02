@@ -17,6 +17,7 @@ import Completed from "./components/Completed/Completed";
 import MyProfile from "./components/MyProfile/MyProfile";
 import AddTask from "./components/AddTask/AddTask";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import EditTask from "./components/EditTask/EditTask";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +79,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddTask></AddTask>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/taskDashboard/editTask/:id",
+        element: (
+          <PrivateRoute>
+            <EditTask></EditTask>
           </PrivateRoute>
         ),
       },

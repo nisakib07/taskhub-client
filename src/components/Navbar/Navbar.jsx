@@ -10,7 +10,6 @@ import { CgProfile } from "react-icons/cg";
 
 const Navbar = () => {
   const { user, userLogOut } = useContext(AuthContext);
-  console.log(user);
 
   const handleLogOut = () => {
     userLogOut();

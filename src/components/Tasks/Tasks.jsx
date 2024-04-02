@@ -122,9 +122,11 @@ const Tasks = () => {
                   </p>
 
                   <div className="flex gap-4 items-center">
-                    <button>
-                      <FaRegEdit></FaRegEdit>
-                    </button>
+                    <Link to={`/taskDashboard/editTask/${task?._id}`}>
+                      <button>
+                        <FaRegEdit></FaRegEdit>
+                      </button>
+                    </Link>
                     <button onClick={() => handleDelete(task?._id)}>
                       <MdDeleteOutline></MdDeleteOutline>
                     </button>{" "}

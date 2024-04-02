@@ -1,9 +1,11 @@
 import Lottie from "react-lottie";
 import signUp from "../../assets/signup.json";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
 
 const img_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 
@@ -18,12 +20,14 @@ const SignUp = () => {
     },
   };
 
+  const { createUser, userProfileUpdate } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const navigate = useNavigate();
   const onSubmit = async (data) => {
     const imageFile = { image: data.userImage[0] };
     const res = await axios.post(img_hosting_api, imageFile, {
@@ -40,14 +44,20 @@ const SignUp = () => {
         userImage: res.data.data.display_url,
       };
 
-      await axios
-        .post("http://localhost:5000/register", newUser)
-        .then((res) => {
-          if (res.data === "Email already in use") {
-            toast.error(res.data);
-          } else {
-            toast.success("Registered Successfully");
-          }
+      createUser(data?.email, data?.password)
+        .then(() => {
+          userProfileUpdate(data?.name, newUser?.userImage).then(() => {
+            axios
+              .post("http://localhost:5000/register", newUser)
+              .then((res) => {
+                if (res.data === "Email already in use") {
+                  toast.error(res.data);
+                } else {
+                  toast.success("Registered Successfully");
+                  navigate("/taskDashboard/tasks");
+                }
+              });
+          });
         })
         .catch((error) => {
           toast.error(error.message);
@@ -67,22 +77,68 @@ const SignUp = () => {
               <label className="label">
                 <span className="text-lg font-semibold">Name</span>
               </label>
-              <input className="input input-bordered" {...register("name")} />
+              <input
+                type="text"
+                placeholder="Type Here"
+                className="input input-bordered"
+                name="text"
+                {...register("name", { required: true })}
+              />
+              {errors.name && (
+                <span className="text-red-700 mt-2 text-center">
+                  Name is required
+                </span>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
                 <span className="text-lg font-semibold">Email Address</span>
               </label>
-              <input className="input input-bordered" {...register("email")} />
+              <input
+                type="email"
+                placeholder="Type Here"
+                className="input input-bordered"
+                name="email"
+                {...register("email", { required: true })}
+              />
+              {errors.email && (
+                <span className="text-red-700 mt-2 text-center">
+                  Email is required
+                </span>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
                 <span className="text-lg font-semibold">Password</span>
               </label>
               <input
+                type="password"
+                placeholder="Enter your password"
                 className="input input-bordered"
-                {...register("password")}
+                name="password"
+                {...register("password", {
+                  required: true,
+                  minLength: 6,
+                  pattern:
+                    /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]).+$/,
+                })}
               />
+              {errors.password?.type === "required" && (
+                <span className="text-red-700 mt-2 text-center">
+                  Password is required
+                </span>
+              )}
+              {errors.password?.type === "minLength" && (
+                <span className="text-red-700 mt-2 text-center">
+                  Password must have at least 6 characters
+                </span>
+              )}
+              {errors.password?.type === "pattern" && (
+                <span className="text-red-700 mt-2 text-center">
+                  Password must have at least <br /> one capital letter and{" "}
+                  special character
+                </span>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -91,8 +147,13 @@ const SignUp = () => {
               <input
                 type="file"
                 className="file-input file-input-bordered border-0  w-full max-w-xs"
-                {...register("userImage")}
+                {...register("userImage", { required: true })}
               />
+              {errors.userImage && (
+                <span className="text-red-700 mt-2 text-center">
+                  Photo is required
+                </span>
+              )}
             </div>
             <button
               type="submit"

@@ -1,7 +1,11 @@
 import Lottie from "react-lottie";
 import login from "../../assets/login.json";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
 
 const Login = () => {
   const defaultOptions = {
@@ -13,13 +17,31 @@ const Login = () => {
     },
   };
 
+  const navigate = useNavigate();
+
+  const { userSignIn } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    const email = data?.email;
+    const password = data?.password;
+
+    userSignIn(email, password)
+      .then(() => {
+        navigate("/taskDashboard/tasks");
+        toast.success("Logged In Successfully");
+        reset();
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
   return (
     <div className="flex items-center justify-around max-w-screen-xl mx-auto">
       <div className="w-1/2">
@@ -33,8 +55,11 @@ const Login = () => {
                 <span className="text-lg font-semibold">Email Address</span>
               </label>
               <input
+                type="email"
+                placeholder="Type Here"
                 className="input input-bordered"
-                {...register("example")}
+                name="email"
+                {...register("email", { required: true })}
               />
             </div>
             <div className="form-control">
@@ -42,12 +67,20 @@ const Login = () => {
                 <span className="text-lg font-semibold">Password</span>
               </label>
               <input
+                type="password"
+                placeholder="Enter your password"
                 className="input input-bordered"
-                {...register("example")}
+                name="password"
+                {...register("password", {
+                  required: true,
+                })}
               />
             </div>
-            <button className="btn mt-3 w-full bg-green-500 hover:bg-green-400 border-0">
-              Log In
+
+            <button
+              type="submit"
+              className="btn mt-4 w-full bg-green-500 hover:bg-green-400 border-0">
+              Login
             </button>
           </form>
           <p className="mt-3">

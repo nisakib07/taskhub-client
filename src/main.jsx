@@ -12,6 +12,13 @@ import TaskDashboard from "./components/TaskDashboard/TaskDashboard";
 import Tasks from "./components/Tasks/Tasks";
 import AuthProvider from "./Providers/AuthProvider";
 import PrivateRoute from "./RouterProvider/PrivateRoute";
+import Ongoing from "./components/Ongoing/Ongoing";
+import Completed from "./components/Completed/Completed";
+import MyProfile from "./components/MyProfile/MyProfile";
+import AddTask from "./components/AddTask/AddTask";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -36,7 +43,43 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/taskDashboard/tasks",
-        element: <Tasks></Tasks>,
+        element: (
+          <PrivateRoute>
+            <Tasks></Tasks>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/taskDashboard/ongoing-tasks",
+        element: (
+          <PrivateRoute>
+            <Ongoing></Ongoing>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/taskDashboard/completed-tasks",
+        element: (
+          <PrivateRoute>
+            <Completed></Completed>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/taskDashboard/profile",
+        element: (
+          <PrivateRoute>
+            <MyProfile></MyProfile>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/taskDashboard/add-task",
+        element: (
+          <PrivateRoute>
+            <AddTask></AddTask>
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -45,8 +88,10 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
-      <ToastContainer></ToastContainer>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ToastContainer></ToastContainer>
+      </QueryClientProvider>
     </AuthProvider>
   </React.StrictMode>
 );

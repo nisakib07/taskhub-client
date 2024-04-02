@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../Provider/AuthProvider";
+import { AuthContext } from "../Providers/AuthProvider";
+import { toast } from "react-toastify";
 
 const useAxiosSecure = () => {
   const navigate = useNavigate();

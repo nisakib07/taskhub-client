@@ -48,9 +48,18 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
 
       if (currentUser) {
-        axios.post("http://localhost:5000/jwt", loggedUser).then((res) => {
-          localStorage.setItem("token", res?.data?.token);
-        });
+        axios
+          .post("http://localhost:5000/jwt", loggedUser)
+          .then((res) => {
+            localStorage.setItem("token", res?.data?.token);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+      } else {
+        localStorage.removeItem("token");
+        setLoading(false);
       }
     });
     return () => {

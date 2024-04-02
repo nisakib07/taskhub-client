@@ -7,6 +7,7 @@ import { MdAddTask } from "react-icons/md";
 import { MdOutlineTaskAlt } from "react-icons/md";
 import { BiTaskX } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, userLogOut } = useContext(AuthContext);
@@ -32,7 +33,7 @@ const Navbar = () => {
                   isActive ? "bg-blue-600 text-white" : ""
                 } p-2 rounded-lg`
               }>
-              <MdAddTask /> New Tasks
+              <MdAddTask /> Pending Tasks
             </NavLink>
             <NavLink
               to="/taskDashboard/ongoing-tasks"
@@ -61,8 +62,11 @@ const Navbar = () => {
               }>
               <CgProfile /> My Profile
             </NavLink>
-            <div className="mt-10 mx-2">
-              <a onClick={handleLogOut}>Logout</a>
+            <div className="mt-10 mx-2 flex items-center justify-between bg-blue-600 p-2 rounded-lg text-white hover:cursor-pointer">
+              <a onClick={handleLogOut} className="hover:cursor-pointer">
+                Logout
+              </a>
+              <FaLongArrowAltRight></FaLongArrowAltRight>
             </div>
           </div>
         </div>
@@ -91,7 +95,7 @@ const Navbar = () => {
                       isActive ? "bg-blue-600 text-white" : ""
                     } p-2 rounded-lg`
                   }>
-                  <MdAddTask /> New Tasks
+                  <MdAddTask /> Pending Tasks
                 </NavLink>
                 <NavLink
                   to="/taskDashboard/ongoing-tasks"
@@ -120,8 +124,11 @@ const Navbar = () => {
                   }>
                   <CgProfile /> My Profile
                 </NavLink>
-                <div className="mt-10 mx-2">
-                  <a onClick={handleLogOut}>Logout</a>
+                <div className="mt-10 mx-2 flex items-center justify-between bg-blue-600 p-2 rounded-lg text-white hover:cursor-pointer">
+                  <a onClick={handleLogOut} className="hover:cursor-pointer">
+                    Logout
+                  </a>
+                  <FaLongArrowAltRight></FaLongArrowAltRight>
                 </div>
               </div>
             </ul>

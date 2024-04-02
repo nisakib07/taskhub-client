@@ -100,7 +100,7 @@ const Tasks = () => {
         <div>
           <h1 className="text-2xl font-semibold">Pending Tasks</h1>
         </div>
-        <div className="">
+        <div>
           <Link
             to="/taskDashboard/add-task"
             className="bg-blue-600 text-white p-2 rounded-lg font-semibold">
@@ -121,7 +121,7 @@ const Tasks = () => {
                 <p className="mt-2">{task?.description}</p>
                 <div className="mt-2 flex justify-between">
                   <p>
-                    <span className="font-bold bg-warning px-2 rounded-lg">
+                    <span className="font-bold bg-red-400 px-2 rounded-lg">
                       Deadline :
                     </span>
                     {task?.deadline}
@@ -133,7 +133,7 @@ const Tasks = () => {
                         <FaRegEdit></FaRegEdit>
                       </button>
                     </Link>
-                    <button onClick={() => handleDelete(e, task?._id)}>
+                    <button onClick={() => handleDelete(task?._id)}>
                       <MdDeleteOutline></MdDeleteOutline>
                     </button>{" "}
                     <select

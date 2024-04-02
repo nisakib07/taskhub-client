@@ -6,6 +6,10 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { IoIosArrowBack, IoIosArrowForward, IoMdTime } from "react-icons/io";
 import { IoHandLeftOutline } from "react-icons/io5";
+import { FaRegEdit } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const Tasks = () => {
   const axiosSecure = useAxiosSecure();
@@ -23,7 +27,7 @@ const Tasks = () => {
     },
   });
 
-  console.log(tasksNum);
+  // console.log(tasksNum);
 
   const {
     data: pendingTasks = [],
@@ -39,7 +43,7 @@ const Tasks = () => {
     },
   });
 
-  console.log(pendingTasks);
+  // console.log(pendingTasks);
 
   const handleRightPagination = () => {
     if (currentPage + 1 < totalPages) {
@@ -53,6 +57,36 @@ const Tasks = () => {
   };
 
   const pagesArray = Array.from({ length: totalPages }, (_, index) => index);
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+  };
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/deleteTask/${id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your task has been deleted.",
+              icon: "success",
+            });
+            refetch();
+          }
+        });
+      }
+    });
+  };
 
   return (
     <div>
@@ -79,12 +113,33 @@ const Tasks = () => {
                 task={task}>
                 <h1 className="text-xl font-semibold">{task?.title}</h1>
                 <p className="mt-2">{task?.description}</p>
-                <p className="mt-2">
-                  <span className="font-bold bg-warning px-2 rounded-lg">
-                    Deadline :
-                  </span>{" "}
-                  {task?.deadline}
-                </p>
+                <div className="mt-2 flex justify-between">
+                  <p>
+                    <span className="font-bold bg-warning px-2 rounded-lg">
+                      Deadline :
+                    </span>
+                    {task?.deadline}
+                  </p>
+
+                  <div className="flex gap-4 items-center">
+                    <button>
+                      <FaRegEdit></FaRegEdit>
+                    </button>
+                    <button onClick={() => handleDelete(task?._id)}>
+                      <MdDeleteOutline></MdDeleteOutline>
+                    </button>{" "}
+                    <select
+                      onChange={handleChange}
+                      defaultValue="pending"
+                      className=" w-full max-w-xs hover:cursor-pointer bg-blue-200 px-2 rounded-lg">
+                      <option disabled value="pending">
+                        Pending
+                      </option>
+                      <option value="ongoing">Ongoing</option>
+                      <option value="completed">Completed</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

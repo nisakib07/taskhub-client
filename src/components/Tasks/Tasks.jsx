@@ -10,6 +10,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const Tasks = () => {
   const axiosSecure = useAxiosSecure();
@@ -27,8 +28,6 @@ const Tasks = () => {
     },
   });
 
-  // console.log(tasksNum);
-
   const {
     data: pendingTasks = [],
     isFetching,
@@ -43,8 +42,6 @@ const Tasks = () => {
     },
   });
 
-  // console.log(pendingTasks);
-
   const handleRightPagination = () => {
     if (currentPage + 1 < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -58,9 +55,18 @@ const Tasks = () => {
 
   const pagesArray = Array.from({ length: totalPages }, (_, index) => index);
 
-  const handleChange = (e) => {
+  const handleChange = (e, taskId) => {
     e.preventDefault();
-    console.log(e.target.value);
+    const updatedStatus = {
+      status: e.target.value,
+    };
+
+    axiosSecure.put(`updateStatus/${taskId}`, updatedStatus).then((res) => {
+      if (res.data.modifiedCount > 0) {
+        refetch();
+        toast.success(`Status updated to ${e.target.value}`);
+      }
+    });
   };
 
   const handleDelete = (id) => {
@@ -127,11 +133,11 @@ const Tasks = () => {
                         <FaRegEdit></FaRegEdit>
                       </button>
                     </Link>
-                    <button onClick={() => handleDelete(task?._id)}>
+                    <button onClick={() => handleDelete(e, task?._id)}>
                       <MdDeleteOutline></MdDeleteOutline>
                     </button>{" "}
                     <select
-                      onChange={handleChange}
+                      onChange={(e) => handleChange(e, task?._id)}
                       defaultValue="pending"
                       className=" w-full max-w-xs hover:cursor-pointer bg-blue-200 px-2 rounded-lg">
                       <option disabled value="pending">

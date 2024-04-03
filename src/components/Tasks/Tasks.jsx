@@ -98,7 +98,7 @@ const Tasks = () => {
     <div>
       <div className="flex justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Pending Tasks</h1>
+          <h1 className="text-2xl font-semibold px-3">Pending Tasks</h1>
         </div>
         <div>
           <Link
@@ -152,7 +152,9 @@ const Tasks = () => {
             ))}
           </div>
         ) : (
-          <div></div>
+          <div className="h-[200px] md:h-[500px] flex justify-center items-center">
+            <h1 className="text-xl font-bold">No tasks yet!</h1>
+          </div>
         )}
 
         <div className={`mt-10 ${tasksNum?.total > 4 ? "block" : "hidden"}`}>

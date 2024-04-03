@@ -82,7 +82,7 @@ const Completed = () => {
   return (
     <div>
       <div>
-        <h1 className="text-2xl font-semibold">Completed Tasks</h1>
+        <h1 className="text-2xl font-semibold px-3">Completed Tasks</h1>
       </div>
 
       <div className="mt-[15px]">
@@ -121,7 +121,9 @@ const Completed = () => {
             ))}
           </div>
         ) : (
-          <div></div>
+          <div className="h-[200px] md:h-[500px] flex justify-center items-center">
+            <h1 className="text-xl font-bold">No completed tasks!</h1>
+          </div>
         )}
 
         <div

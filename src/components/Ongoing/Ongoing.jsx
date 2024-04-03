@@ -95,7 +95,7 @@ const Ongoing = () => {
   return (
     <div>
       <div>
-        <h1 className="text-2xl font-semibold">Ongoing Tasks</h1>
+        <h1 className="text-2xl font-semibold px-3">Ongoing Tasks</h1>
       </div>
 
       <div className="mt-[15px]">
@@ -141,7 +141,9 @@ const Ongoing = () => {
             ))}
           </div>
         ) : (
-          <div></div>
+          <div className="h-[200px] md:h-[500px] flex justify-center items-center">
+            <h1 className="text-xl font-bold">No ongoing tasks!</h1>
+          </div>
         )}
 
         <div className={`mt-10 ${ongoingNum?.total > 4 ? "block" : "hidden"}`}>

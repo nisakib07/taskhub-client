@@ -14,6 +14,7 @@ const TaskDashboard = () => {
           <Outlet></Outlet>
         </div>
       </div>
+      <footer className="text-center mt-8">©2024 Nadiatul Islam Sakib</footer>
     </div>
   );
 };

@@ -8,12 +8,14 @@ import { MdOutlineTaskAlt } from "react-icons/md";
 import { BiTaskX } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
-  const { user, userLogOut } = useContext(AuthContext);
+  const { userLogOut } = useContext(AuthContext);
 
   const handleLogOut = () => {
     userLogOut();
+    toast.success("Logged out successfully");
   };
   return (
     <div>
@@ -62,10 +64,10 @@ const Navbar = () => {
               }>
               <CgProfile /> My Profile
             </NavLink>
-            <div className="mt-10 mx-2 flex items-center justify-between bg-blue-600 p-2 rounded-lg text-white hover:cursor-pointer">
-              <a onClick={handleLogOut} className="hover:cursor-pointer">
-                Logout
-              </a>
+            <div
+              onClick={handleLogOut}
+              className="mt-10 mx-2 flex items-center justify-between bg-blue-600 p-2 rounded-lg text-white hover:cursor-pointer">
+              <a className="hover:cursor-pointer">Logout</a>
               <FaLongArrowAltRight></FaLongArrowAltRight>
             </div>
           </div>
@@ -124,10 +126,10 @@ const Navbar = () => {
                   }>
                   <CgProfile /> My Profile
                 </NavLink>
-                <div className="mt-10 mx-2 flex items-center justify-between bg-blue-600 p-2 rounded-lg text-white hover:cursor-pointer">
-                  <a onClick={handleLogOut} className="hover:cursor-pointer">
-                    Logout
-                  </a>
+                <div
+                  onClick={handleLogOut}
+                  className="mt-10 mx-2 flex items-center justify-between bg-blue-600 p-2 rounded-lg text-white hover:cursor-pointer">
+                  <a className="hover:cursor-pointer">Logout</a>
                   <FaLongArrowAltRight></FaLongArrowAltRight>
                 </div>
               </div>
@@ -135,7 +137,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <Link>
+        <Link to="/">
           <img className="w-32" src={Logo} alt="" />
         </Link>
       </div>

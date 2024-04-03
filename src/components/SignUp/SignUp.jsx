@@ -49,7 +49,7 @@ const SignUp = () => {
         .then(() => {
           userProfileUpdate(data?.name, newUser?.userImage).then(() => {
             axios
-              .post("http://localhost:5000/register", newUser)
+              .post("https://task-hub-server-zeta.vercel.app/register", newUser)
               .then((res) => {
                 if (res.data === "Email already in use") {
                   toast.error(res.data);

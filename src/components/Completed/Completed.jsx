@@ -10,6 +10,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { Blocks } from "react-loader-spinner";
 
 const Completed = () => {
   const axiosSecure = useAxiosSecure();
@@ -78,6 +79,21 @@ const Completed = () => {
       }
     });
   };
+
+  if (isFetching) {
+    return (
+      <div className="h-[200px] md:h-[500px] flex justify-center items-center">
+        <Blocks
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{}}
+          wrapperClass="blocks-wrapper"
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

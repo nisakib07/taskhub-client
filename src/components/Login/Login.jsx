@@ -37,7 +37,6 @@ const Login = () => {
       .then(() => {
         navigate("/taskDashboard/tasks");
         toast.success("Logged In Successfully");
-        reset();
       })
       .catch((error) => {
         toast.error(error.message);

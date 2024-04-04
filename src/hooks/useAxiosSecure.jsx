@@ -8,7 +8,7 @@ const useAxiosSecure = () => {
   const navigate = useNavigate();
   const { userLogOut } = useContext(AuthContext);
   const axiosSecure = axios.create({
-    baseURL: "https://task-hub-server-zeta.vercel.app",
+    baseURL: "http://localhost:5000",
   });
 
   axiosSecure.interceptors.request.use(

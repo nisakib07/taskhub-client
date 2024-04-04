@@ -35,7 +35,7 @@ const Login = () => {
 
     userSignIn(email, password)
       .then(() => {
-        navigate("/taskDashboard/profile");
+        navigate("/taskDashboard/tasks");
         toast.success("Logged In Successfully");
       })
       .catch((error) => {

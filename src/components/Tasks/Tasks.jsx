@@ -29,6 +29,8 @@ const Tasks = () => {
     },
   });
 
+  console.log(user?.email);
+
   const {
     data: pendingTasks = [],
     isFetching,

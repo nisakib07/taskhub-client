@@ -49,8 +49,9 @@ const AuthProvider = ({ children }) => {
 
       if (currentUser) {
         axios
-          .post("https://task-hub-server-zeta.vercel.app/jwt", loggedUser)
+          .post("http://localhost:5000/jwt", loggedUser)
           .then((res) => {
+            console.log(res.data);
             localStorage.setItem("token", res?.data?.token);
             setLoading(false);
           })

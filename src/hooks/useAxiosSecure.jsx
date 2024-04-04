@@ -35,7 +35,7 @@ const useAxiosSecure = () => {
       const status = error?.response?.status;
       if (status === 401 || status === 403) {
         await userLogOut();
-        toast.error("You are logged out!");
+        toast.error(error.message);
         navigate("/login");
       }
       return Promise.reject(error);

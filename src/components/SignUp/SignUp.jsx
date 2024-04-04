@@ -55,7 +55,7 @@ const SignUp = () => {
                   toast.error(res.data);
                 } else {
                   toast.success("Registered Successfully");
-                  navigate("/taskDashboard/tasks");
+                  navigate("/taskDashboard/profile");
                 }
               });
           });

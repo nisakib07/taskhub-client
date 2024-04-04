@@ -29,6 +29,15 @@ const Navbar = () => {
 
           <div className="mt-5 flex flex-col text-lg font-semibold gap-3">
             <NavLink
+              to="/taskDashboard/profile"
+              className={({ isActive }) =>
+                `flex items-center gap-3 ${
+                  isActive ? "bg-blue-600 text-white" : ""
+                } p-2 rounded-lg`
+              }>
+              <CgProfile /> My Profile
+            </NavLink>
+            <NavLink
               to="/taskDashboard/tasks"
               className={({ isActive }) =>
                 `flex items-center gap-3 ${
@@ -55,15 +64,7 @@ const Navbar = () => {
               }>
               <MdOutlineTaskAlt /> Completed Tasks
             </NavLink>
-            <NavLink
-              to="/taskDashboard/profile"
-              className={({ isActive }) =>
-                `flex items-center gap-3 ${
-                  isActive ? "bg-blue-600 text-white" : ""
-                } p-2 rounded-lg`
-              }>
-              <CgProfile /> My Profile
-            </NavLink>
+
             <div
               onClick={handleLogOut}
               className="mt-10 mx-2 flex items-center justify-between bg-blue-600 p-2 rounded-lg text-white hover:cursor-pointer">
